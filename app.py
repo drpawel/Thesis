@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template
 import uuid
 
 app = Flask(__name__)
@@ -11,7 +11,7 @@ def get_default_page():
 
 @app.route('/add', methods=["POST"])
 def add_measurement():
-    return redirect(url_for('get_result', measurement_id=uuid.uuid4()))
+    return str(uuid.uuid4())
 
 
 @app.route('/result/<string:measurement_id>')
