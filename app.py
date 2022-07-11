@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 import uuid
 
 app = Flask(__name__)
@@ -9,15 +9,19 @@ def get_default_page():
     return render_template('index.html')
 
 
-@app.route('/add', methods=["POST"])
-def add_measurement():
-    return str(uuid.uuid4())
-
-
-@app.route('/result/<string:measurement_id>')
-def get_result(measurement_id):
-    print(measurement_id)
+@app.route('/result')
+def get_result_page():
     return render_template('result.html')
+
+
+@app.route('/measurement', methods=["POST"])
+def add_measurement():
+    return jsonify(id=uuid.uuid4())
+
+
+@app.route('/result/<string:measurement_id>', methods=["GET"])
+def get_result(measurement_id):
+    return jsonify(id=measurement_id)
 
 
 if __name__ == '__main__':
