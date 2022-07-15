@@ -1,4 +1,4 @@
-const userId = document.getElementById('user_name');
+const userName = document.getElementById('user_name');
 const submitButton = document.getElementById('submit_button');
 const authenticateButton = document.getElementById('authenticate_button');
 const state = {
@@ -7,7 +7,7 @@ const state = {
 }
 
 let password = document.getElementById('password');
-let measurements = [];
+let keyEvents = [];
 
 password.addEventListener('keydown', keyDownTextField);
 password.addEventListener('keyup', keyUpTextField);
@@ -16,11 +16,11 @@ authenticateButton.addEventListener('click', validateAndSendRequest);
 document.cookie = 'sessionId=' + uuidV4();
 
 function keyDownTextField(e) {
-    measurements.push({keycode: e.keyCode, timestamp: Date.now(), state: state.keydown})
+    keyEvents.push({keycode: e.keyCode, timestamp: Date.now(), state: state.keydown})
 }
 
 function keyUpTextField(e) {
-    measurements.push({keycode: e.keyCode, timestamp: Date.now(), state: state.keyup})
+    keyEvents.push({keycode: e.keyCode, timestamp: Date.now(), state: state.keyup})
 }
 
 function validateAndSendTrainingRequest(){
@@ -50,7 +50,7 @@ function sendRequest(isTraining) {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({userId: userId.value, isTraining: isTraining, measurements: measurements}),
+        body: JSON.stringify({userName: userName.value, isTraining: isTraining, keyEvents: keyEvents}),
         method: 'POST'
     });
 }
@@ -65,7 +65,7 @@ function isPasswordValid(passwordValue){
 }
 
 function isMeasurementValid(){
-    if(measurements.length < 24){
+    if(keyEvents.length < 24){
         alert('Measurement scheme is not valid!');
         clearPasswordData();
         return false;
@@ -74,7 +74,7 @@ function isMeasurementValid(){
 }
 
 function clearPasswordData() {
-    measurements = [];
+    keyEvents = [];
     password.value = '';
 }
 

@@ -1,5 +1,5 @@
-from flask import Flask, render_template, jsonify
-import uuid
+from flask import Flask, render_template, jsonify, request, abort
+import repository
 
 app = Flask(__name__)
 
@@ -15,12 +15,17 @@ def get_analysis_page(measurement_id):
     return render_template('analysis.html')
 
 
-@app.route('/measurements', methods=["POST"])
+@app.route('/measurements', methods=['POST'])
 def add_measurement():
-    return jsonify(id=uuid.uuid4())
+    session_id = request.cookies.get("sessionId")
+    if not session_id:
+        abort(401)
+
+    measurement_id = repository.insert_measurement(request.json, session_id)
+    return jsonify(id=measurement_id)
 
 
-@app.route('/results/<string:measurement_id>', methods=["GET"])
+@app.route('/results/<string:measurement_id>', methods=['GET'])
 def get_result(measurement_id):
     return jsonify(id=measurement_id)
 
