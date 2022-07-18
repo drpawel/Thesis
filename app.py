@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request, abort
-import repository
+import service
 
 app = Flask(__name__)
 
@@ -21,7 +21,11 @@ def add_measurement():
     if not session_id:
         abort(401)
 
-    measurement_id = repository.insert_measurement(request.json, session_id)
+    try:
+        measurement_id = service.insert_measurement(request.json, session_id)
+    except Exception as err:
+        return "Occurred error: " + str(err)
+
     return jsonify(id=measurement_id)
 
 
