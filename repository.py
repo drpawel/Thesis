@@ -17,20 +17,20 @@ def insert_measurement(measurement, session_id):
     conn = connect()
     cursor = conn.cursor()
 
-    measurement_id = uuid.uuid4()
     user_id = insert_user(cursor, measurement.get('userName'))
     conn.commit()
 
-    insert_measurement_query = 'INSERT INTO measurements (external_id, session_id, is_training, key_events, user_id)' \
-                               'VALUES (UUID_TO_BIN(%s), UUID_TO_BIN(%s), %s, JSON_ARRAY(%s), %s)'
+    insert_data_query = 'INSERT INTO measurements (external_id, user_id, session_id, is_training, H_period, ' \
+                        'DD_period_t, UD_period_t, H_t, DD_t_i, UD_t_i, H_i, DD_i_e, UD_i_e, H_e, DD_e_five, ' \
+                        'UD_e_five, H_five, DD_five_Shift_r, UD_five_Shift_r, H_Shift_r, DD_Shift_r_o, UD_Shift_r_o, ' \
+                        'H_o, DD_o_a, UD_o_a, H_a, DD_a_n, UD_a_n, H_n, DD_n_l, UD_n_l, H_l) VALUES (UUID_TO_BIN(%s), ' \
+                        '%s, UUID_TO_BIN(%s), %s, %s, %s ,%s, %s, %s, %s ,%s, %s, %s, %s ,%s, %s, %s, %s ,%s, %s, %s, ' \
+                        '%s ,%s, %s, %s, %s ,%s, %s, %s, %s, %s, %s) '
 
-    data = (measurement_id.hex,
-            session_id,
-            int(measurement.get('isTraining')),
-            json.dumps(measurement.get('keyEvents')),
-            user_id)
+    measurement_id = uuid.uuid4()
+    data = get_measurement_data(measurement, measurement_id, session_id, user_id)
 
-    cursor.execute(insert_measurement_query, data)
+    cursor.execute(insert_data_query, data)
     conn.commit()
     conn.close()
     return measurement_id
@@ -45,3 +45,15 @@ def insert_user(cursor, user_name):
         return cursor.lastrowid
     else:
         return user_id[0]
+
+
+def get_measurement_data(measurement, measurement_id, session_id, user_id):
+    key_events = measurement.get('keyEvents')
+
+    data = (measurement_id.hex,
+            session_id,
+            int(measurement.get('isTraining')),
+            # TODO add logic
+            key_events,
+            user_id)
+    return data
