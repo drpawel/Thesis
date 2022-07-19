@@ -1,6 +1,7 @@
 import uuid
 
 import mysql.connector
+import data_formatter
 
 
 def connect():
@@ -27,7 +28,7 @@ def insert_measurement(measurement, session_id):
                         '%s ,%s, %s, %s, %s ,%s, %s, %s, %s, %s, %s) '
 
     measurement_id = uuid.uuid4()
-    data = get_measurement_data(measurement, measurement_id, session_id, user_id)
+    data = get_data(measurement, measurement_id, session_id, user_id)
 
     cursor.execute(insert_data_query, data)
     conn.commit()
@@ -46,13 +47,11 @@ def insert_user(cursor, user_name):
         return user_id[0]
 
 
-def get_measurement_data(measurement, measurement_id, session_id, user_id):
+def get_data(measurement, measurement_id, session_id, user_id):
     key_events = measurement.get('keyEvents')
 
     data = (measurement_id.hex,
+            user_id,
             session_id,
-            int(measurement.get('isTraining')),
-            # TODO add logic
-            key_events,
-            user_id)
+            int(measurement.get('isTraining')),) + data_formatter.retrieve_data(key_events)
     return data

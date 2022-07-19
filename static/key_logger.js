@@ -16,11 +16,11 @@ authenticateButton.addEventListener('click', validateAndSendRequest);
 document.cookie = 'sessionId=' + uuidV4();
 
 function keyDownTextField(e) {
-    keyEvents.push({keycode: e.keyCode, timestamp: Date.now(), state: state.keydown})
+    keyEvents.push({keyCode: e.key, timestamp: Date.now(), state: state.keydown})
 }
 
 function keyUpTextField(e) {
-    keyEvents.push({keycode: e.keyCode, timestamp: Date.now(), state: state.keyup})
+    keyEvents.push({keyCode: e.key, timestamp: Date.now(), state: state.keyup})
 }
 
 function validateAndSendTrainingRequest(){
@@ -56,7 +56,7 @@ function sendRequest(isTraining) {
 }
 
 function isPasswordValid(passwordValue){
-    if(passwordValue !== '.tie5Roanl.'){
+    if(passwordValue !== '.tie5Roanl'){
         alert('Password is not valid!');
         clearPasswordData();
         return false;
@@ -65,7 +65,7 @@ function isPasswordValid(passwordValue){
 }
 
 function isMeasurementValid(){
-    if(keyEvents.length < 24){
+    if(keyEvents.length < 22){
         alert('Measurement scheme is not valid!');
         clearPasswordData();
         return false;
