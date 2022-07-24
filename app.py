@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request, abort
-import service
+from service import service
 
 app = Flask(__name__)
 

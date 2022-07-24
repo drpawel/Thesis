@@ -1,7 +1,7 @@
 import uuid
 
 import mysql.connector
-import data_formatter
+from data import data_formatter
 
 
 def connect():

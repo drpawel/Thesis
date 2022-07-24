@@ -50,7 +50,7 @@ def get_session_id(subject, session_index):
     return generate_uuid(username_with_session_index).hex
 
 
-with open('resources/DSL-StrongPasswordData.csv', 'r') as file:
+with open('../resources/DSL-StrongPasswordData.csv', 'r') as file:
     reader = csv.DictReader(file)
 
     users = set()
@@ -59,7 +59,7 @@ with open('resources/DSL-StrongPasswordData.csv', 'r') as file:
 
     users_names = insert_user(users)
 
-with open('resources/DSL-StrongPasswordData.csv', 'r') as file:
+with open('../resources/DSL-StrongPasswordData.csv', 'r') as file:
     reader = csv.DictReader(file)
 
     data = [(uuid.uuid4().hex, user_ids.get(i['subject']), get_session_id(i['subject'], i['sessionIndex']), True, i['H.period'],
