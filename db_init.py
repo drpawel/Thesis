@@ -18,7 +18,7 @@ conn.commit()
 
 create_measurement_table = 'CREATE TABLE measurements (id INT PRIMARY KEY AUTO_INCREMENT, external_id BINARY(16) ' \
                            'UNIQUE NOT NULL, user_id INT, FOREIGN KEY (user_id) REFERENCES users(id), session_id ' \
-                           'BINARY(16) UNIQUE NOT NULL, is_training BOOLEAN NOT NULL, H_period FLOAT, DD_period_t ' \
+                           'BINARY(16) NOT NULL, is_training BOOLEAN NOT NULL, H_period FLOAT, DD_period_t ' \
                            'FLOAT, UD_period_t FLOAT, H_t FLOAT, DD_t_i FLOAT, UD_t_i FLOAT, H_i FLOAT, DD_i_e FLOAT, ' \
                            'UD_i_e FLOAT, H_e FLOAT, DD_e_five FLOAT, UD_e_five FLOAT, H_five FLOAT, DD_five_Shift_r ' \
                            'FLOAT, UD_five_Shift_r FLOAT, H_Shift_r FLOAT, DD_Shift_r_o FLOAT, UD_Shift_r_o FLOAT, ' \
@@ -38,10 +38,16 @@ def insert_user(users_set):
     return user_ids
 
 
-def get_session_id(session_index):
-    # TODO add logic
-    print(session_index)
-    return uuid.uuid4().hex
+def generate_uuid(username_with_session):
+    class Namespace:
+        bytes = b''
+
+    return uuid.uuid3(Namespace, username_with_session)
+
+
+def get_session_id(subject, session_index):
+    username_with_session_index = subject + str(session_index)
+    return generate_uuid(username_with_session_index).hex
 
 
 with open('resources/DSL-StrongPasswordData.csv', 'r') as file:
@@ -56,7 +62,7 @@ with open('resources/DSL-StrongPasswordData.csv', 'r') as file:
 with open('resources/DSL-StrongPasswordData.csv', 'r') as file:
     reader = csv.DictReader(file)
 
-    data = [(uuid.uuid4().hex, user_ids.get(i['subject']), get_session_id(i['sessionIndex']), True, i['H.period'],
+    data = [(uuid.uuid4().hex, user_ids.get(i['subject']), get_session_id(i['subject'], i['sessionIndex']), True, i['H.period'],
              i['DD.period.t'], i['UD.period.t'], i['H.t'], i['DD.t.i'], i['UD.t.i'], i['H.i'], i['DD.i.e'], i['UD.i.e'],
              i['H.e'], i['DD.e.five'], i['UD.e.five'], i['H.five'], i['DD.five.Shift.r'], i['UD.five.Shift.r'],
              i['H.Shift.r'], i['DD.Shift.r.o'], i['UD.Shift.r.o'], i['H.o'], i['DD.o.a'], i['UD.o.a'], i['H.a'],
