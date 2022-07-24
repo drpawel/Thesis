@@ -17,6 +17,9 @@ document.cookie = 'sessionId=' + uuidV4();
 
 function keyDownTextField(e) {
     keyEvents.push({keyCode: e.key, timestamp: Date.now(), state: state.keydown})
+    if(e.key === 'Enter'){
+        submitButton.click()
+    }
 }
 
 function keyUpTextField(e) {

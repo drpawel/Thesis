@@ -21,7 +21,6 @@ def format_data(events):
 
 
 def retrieve_data(events):
-    # TODO verify keys
     keys = ['.', 't', 'i', 'e', '5', 'Shift', 'o', 'a', 'n', 'l']
     key_down_list = []
     key_up_list = []
