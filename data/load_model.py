@@ -18,5 +18,6 @@ dd = np.asarray([0.39418201, 0.03036661, 0.03819507, 0.42105263, 0.03381043, 0.0
 dd = np.reshape(dd, (1, 28, 1))
 
 prediction = model.predict(dd)
-classes = np.argmax(prediction, axis=1)
-print(classes+1)
+result = np.argmax(prediction, axis=1)[0] + 1
+probability = prediction.max(1)[0] * 100
+print('Result {} with probability: {}'.format(result, probability))
