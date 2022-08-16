@@ -1,20 +1,10 @@
 import uuid
 
-import mysql.connector
-from data import data_formatter
-
-
-def connect():
-    return mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='',
-        database='thesis'
-    )
+from data import data_formatter, connection_provider
 
 
 def insert_measurement(measurement, session_id):
-    conn = connect()
+    conn = connection_provider.create_connection()
     cursor = conn.cursor()
 
     user_id = insert_user(cursor, measurement.get('userName'))

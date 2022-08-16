@@ -1,2 +1,6 @@
-Flask==2.1.2
-mysql-connector-python==8.0.29
+numpy==1.23.1
+tensorflow==2.9.1
+mysql-connector-python==8.0.30
+flask==2.0.3
+keras==2.9.0
+scikit-learn==1.1.1

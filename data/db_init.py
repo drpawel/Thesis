@@ -1,14 +1,8 @@
 import csv
 import uuid
+from data import connection_provider
 
-import mysql.connector
-
-conn = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    password='',
-    database='thesis'
-)
+conn = connection_provider.create_connection()
 cursor = conn.cursor()
 user_ids = {}
 
@@ -77,4 +71,6 @@ with open('../resources/DSL-StrongPasswordData.csv', 'r') as file:
 
     cursor.executemany(insert_data_query, data)
     conn.commit()
+
+print("Created tables in thesis database: users, measurements")
 conn.close()
