@@ -1,6 +1,6 @@
 import uuid
 
-from data import data_formatter, connection_provider
+from data import data_formatter, connection_provider, model_engine
 
 
 def insert_measurement(measurement, session_id):
@@ -45,3 +45,27 @@ def get_data(measurement, measurement_id, session_id, user_id):
             session_id,
             int(measurement.get('isTraining')),) + data_formatter.retrieve_data(key_events)
     return data
+
+
+def retrain_model(session_id):
+    conn = connection_provider.create_connection()
+    cursor = conn.cursor()
+    training_data = cursor.execute('SELECT * FROM measurements WHERE BIN_TO_UUID(session_id) = %s AND is_training= %s',
+                                   (session_id, 1))
+    conn.commit()
+    conn.close()
+
+    model_engine.retrain(training_data)
+
+
+def get_results(measurement_id):
+    conn = connection_provider.create_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM measurements WHERE external_id = UUID_TO_BIN(%s)', (measurement_id,))
+    measurement = cursor.fetchone()
+    conn.commit()
+    conn.close()
+
+    result, probability = model_engine.predict(measurement)
+
+    return result, probability

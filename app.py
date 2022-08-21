@@ -11,6 +11,8 @@ def get_default_page():
 
 @app.route('/analyze/<string:measurement_id>')
 def get_analysis_page(measurement_id):
+    session_id = request.cookies.get("sessionId")
+    service.retrain_model(session_id)
     # return render_template('analysis.html', measurement_id)
     return render_template('analysis.html')
 
@@ -31,7 +33,8 @@ def add_measurement():
 
 @app.route('/results/<string:measurement_id>', methods=['GET'])
 def get_result(measurement_id):
-    return jsonify(id=measurement_id)
+    result, probability = service.get_results(measurement_id)
+    return jsonify(id=measurement_id, result=result, probability=probability)
 
 
 if __name__ == '__main__':
