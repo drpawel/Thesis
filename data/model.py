@@ -1,10 +1,8 @@
 import numpy as np
 import connection_provider
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
 from tensorflow import keras
 from keras import layers
-from keras.utils import to_categorical
 import matplotlib.pyplot as plt
 
 
@@ -21,7 +19,7 @@ def retrieve_training_and_test_data():
     labels = np.asarray([measurement[2] for measurement in measurements])
 
     data = np.reshape(data, (data.__len__(), 28, 1))
-    labels = to_categorical(labels - 1)
+    labels = labels - 1
 
     return train_test_split(data, labels, test_size=0.20)
 
@@ -36,7 +34,7 @@ def create_and_compile_model():
 
     model.summary()
     model.compile(
-        loss=keras.losses.CategoricalCrossentropy(),
+        loss=keras.losses.SparseCategoricalCrossentropy(),
         optimizer=keras.optimizers.RMSprop(),
         metrics=["accuracy"],
     )
@@ -53,7 +51,7 @@ def train_and_save_model(model, train_x, test_x, train_y, test_y):
     print("Test accuracy:", test_scores[1])
 
     # save model
-    model.save('model.h5')
+    model.save('saved_model/model.h5')
     print("Model saved!")
 
     # summarize history for accuracy

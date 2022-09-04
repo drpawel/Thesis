@@ -50,12 +50,16 @@ def get_data(measurement, measurement_id, session_id, user_id):
 def retrain_model(session_id):
     conn = connection_provider.create_connection()
     cursor = conn.cursor()
-    training_data = cursor.execute('SELECT * FROM measurements WHERE BIN_TO_UUID(session_id) = %s AND is_training= %s',
-                                   (session_id, 1))
+    cursor.execute('SELECT * FROM measurements WHERE session_id = UUID_TO_BIN(%s) AND is_training= %s',
+                   (session_id, 1))
+    training_data = cursor.fetchall()
+    conn.commit()
+    cursor.execute('SELECT * FROM users')
+    users = cursor.fetchall()
     conn.commit()
     conn.close()
 
-    model_engine.retrain(training_data)
+    model_engine.retrain(training_data, users)
 
 
 def get_results(measurement_id):
@@ -66,6 +70,4 @@ def get_results(measurement_id):
     conn.commit()
     conn.close()
 
-    result, probability = model_engine.predict(measurement)
-
-    return result, probability
+    return model_engine.predict(measurement)
