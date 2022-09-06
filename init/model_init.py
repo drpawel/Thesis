@@ -1,5 +1,5 @@
 import numpy as np
-from data import connection_provider
+from data import repository
 from sklearn.model_selection import train_test_split
 from tensorflow import keras
 from keras import layers
@@ -7,13 +7,7 @@ import matplotlib.pyplot as plt
 
 
 def retrieve_training_and_test_data():
-    conn = connection_provider.create_connection()
-    cursor = conn.cursor()
-
-    # retrieve data from database
-    cursor.execute("SELECT * FROM measurements")
-    measurements = cursor.fetchall()
-    conn.close()
+    measurements = repository.get_all_measurements_for_training()
 
     data = np.asarray([measurement[4:] for measurement in measurements])
     labels = np.asarray([measurement[2] for measurement in measurements])
@@ -43,7 +37,7 @@ def create_and_compile_model():
 
 def train_and_save_model(model, train_x, test_x, train_y, test_y):
     # train model
-    history = model.fit(train_x, train_y, epochs=10, validation_split=0.2, batch_size=400)
+    history = model.fit(train_x, train_y, epochs=250, validation_split=0.2, batch_size=400)
 
     # evaluate model
     test_scores = model.evaluate(test_x, test_y, verbose=2)

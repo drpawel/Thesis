@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 
 
 def retrain(retrain_data, users):
-    file_name = os.path.dirname(__file__) + '\\saved_model\\old_model.h5'
+    file_name = os.path.dirname(__file__) + '\\saved_model\\model.h5'
     model = load_model(file_name)
 
     data = np.asarray([measurement[4:] for measurement in retrain_data])
@@ -33,7 +33,7 @@ def retrain(retrain_data, users):
     print("Test loss:", test_scores[0])
     print("Test accuracy:", test_scores[1])
 
-    model.save('data/saved_model/trained_model.h5')
+    model.save('data/saved_model/model.h5')
     print("Model saved!")
 
 
@@ -41,7 +41,7 @@ def predict(measurement):
     if measurement is None:
         return int(-1), int(0)
 
-    file_name = os.path.dirname(__file__) + '\\saved_model\\trained_model.h5'
+    file_name = os.path.dirname(__file__) + '\\saved_model\\model.h5'
     model = load_model(file_name)
 
     measurement_data = np.asarray(measurement[4:])

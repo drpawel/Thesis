@@ -27,7 +27,10 @@ def add_measurement():
 
 @app.route('/retrain', methods=['POST'])
 def retrain_model():
-    service.retrain_model()
+    try:
+        service.retrain_model()
+    except Exception as err:
+        return "Occurred error: " + str(err)
     return "", 202
 
 
