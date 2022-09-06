@@ -47,11 +47,10 @@ def get_data(measurement, measurement_id, session_id, user_id):
     return data
 
 
-def retrain_model(session_id):
+def retrain_model():
     conn = connection_provider.create_connection()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM measurements WHERE session_id = UUID_TO_BIN(%s) AND is_training= %s',
-                   (session_id, 1))
+    cursor.execute('SELECT * FROM measurements WHERE is_training=1')
     training_data = cursor.fetchall()
     conn.commit()
     cursor.execute('SELECT * FROM users')

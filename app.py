@@ -11,8 +11,6 @@ def get_default_page():
 
 @app.route('/analyze/<string:measurement_id>')
 def get_analysis_page(measurement_id):
-    session_id = request.cookies.get("sessionId")
-    service.retrain_model(session_id)
     # return render_template('analysis.html', measurement_id)
     return render_template('analysis.html')
 
@@ -29,6 +27,12 @@ def add_measurement():
         return "Occurred error: " + str(err)
 
     return jsonify(id=measurement_id)
+
+
+@app.route('/retrain', methods=['POST'])
+def retrain_model():
+    service.retrain_model()
+    return "", 202
 
 
 @app.route('/results/<string:measurement_id>', methods=['GET'])

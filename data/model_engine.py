@@ -3,22 +3,22 @@ import numpy as np
 from tensorflow import keras
 from keras.models import load_model
 from keras import layers
+from sklearn.model_selection import train_test_split
 
 
 def retrain(retrain_data, users):
-    file_name = os.path.dirname(__file__) + '\\saved_model\\model.h5'
+    file_name = os.path.dirname(__file__) + '\\saved_model\\old_model.h5'
     model = load_model(file_name)
 
-    train_x = np.asarray([measurement[5:] for measurement in retrain_data])
-    train_y = np.asarray([measurement[2] for measurement in retrain_data])
+    data = np.asarray([measurement[5:] for measurement in retrain_data])
+    labels = np.asarray([measurement[2] for measurement in retrain_data])
 
-    train_x = np.reshape(train_x, (train_x.__len__(), 28, 1))
-    train_y = train_y - 1
+    data = np.reshape(data, (data.__len__(), 28, 1))
+    labels = labels - 1
+
+    train_x, test_x, train_y, test_y = train_test_split(data, labels, test_size=0.20)
 
     model.pop()
-    for layer in model.layers:
-        layer.trainable = False
-
     model.add(layers.Dense(users.__len__(), activation='softmax'))
 
     model.summary()
@@ -27,13 +27,20 @@ def retrain(retrain_data, users):
         optimizer=keras.optimizers.RMSprop(),
         metrics=["accuracy"],
     )
-    model.fit(train_x, train_y, epochs=50, batch_size=400)
+
+    model.fit(train_x, train_y, epochs=250, validation_split=0.2, batch_size=400)
+    test_scores = model.evaluate(test_x, test_y, verbose=2)
+    print("Test loss:", test_scores[0])
+    print("Test accuracy:", test_scores[1])
 
     model.save('data/saved_model/trained_model.h5')
     print("Model saved!")
 
 
 def predict(measurement):
+    if measurement is None:
+        return int(-1), int(0)
+
     file_name = os.path.dirname(__file__) + '\\saved_model\\trained_model.h5'
     model = load_model(file_name)
 
