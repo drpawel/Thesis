@@ -1,0 +1,44 @@
+@startuml
+actor User
+participant WebPage
+participant FlaskApp
+participant Database
+collections KerasModel
+
+group Add training measurement
+autonumber
+User -> WebPage: Training Measurement
+WebPage -> WebPage: Validation
+WebPage -> FlaskApp: JSON
+FlaskApp -> Database: Formatted measurement
+FlaskApp --> User: Message
+end
+
+group Predict result
+autonumber
+User -> WebPage: Measurement
+WebPage -> WebPage: Validation
+WebPage -> FlaskApp: JSON
+FlaskApp -> Database: Formatted measurement
+WebPage -> FlaskApp: Get result page
+FlaskApp --> WebPage: Redirect
+FlaskApp -> Database: Get measurement for prediction
+Database --> FlaskApp: Measurement
+FlaskApp -> KerasModel: Predict
+KerasModel --> FlaskApp: Prediction
+loop
+WebPage -> FlaskApp: Get result
+FlaskApp --> WebPage: Result
+end
+WebPage -> User: Show result
+end
+
+group Retrain model
+autonumber
+User -> FlaskApp: API Call /retrain
+FlaskApp -> KerasModel: Retrain based on all measurements
+KerasModel --> FlaskApp
+FlaskApp --> User
+end
+
+@enduml
