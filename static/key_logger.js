@@ -13,7 +13,6 @@ password.addEventListener('keydown', keyDownTextField);
 password.addEventListener('keyup', keyUpTextField);
 submitButton.addEventListener('click', validateAndSendTrainingRequest);
 authenticateButton.addEventListener('click', validateAndSendRequest);
-document.cookie = 'sessionId=' + uuidV4();
 
 function keyDownTextField(e) {
     keyEvents.push({keyCode: e.key, timestamp: Date.now(), state: state.keydown})
@@ -79,10 +78,4 @@ function isMeasurementValid(){
 function clearPasswordData() {
     keyEvents = [];
     password.value = '';
-}
-
-function uuidV4() {
-    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-    );
 }

@@ -17,12 +17,8 @@ def get_analysis_page(measurement_id):
 
 @app.route('/measurements', methods=['POST'])
 def add_measurement():
-    session_id = request.cookies.get("sessionId")
-    if not session_id:
-        abort(401)
-
     try:
-        measurement_id = service.insert_measurement(request.json, session_id)
+        measurement_id = service.insert_measurement(request.json)
     except Exception as err:
         return "Occurred error: " + str(err)
 
@@ -37,7 +33,7 @@ def retrain_model():
 
 @app.route('/results/<string:measurement_id>', methods=['GET'])
 def get_result(measurement_id):
-    result, probability = service.get_results(measurement_id)
+    result, probability = service.get_result(measurement_id)
     return jsonify(id=measurement_id, result=result, probability=probability)
 
 

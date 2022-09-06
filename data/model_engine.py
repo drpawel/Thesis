@@ -10,7 +10,7 @@ def retrain(retrain_data, users):
     file_name = os.path.dirname(__file__) + '\\saved_model\\old_model.h5'
     model = load_model(file_name)
 
-    data = np.asarray([measurement[5:] for measurement in retrain_data])
+    data = np.asarray([measurement[4:] for measurement in retrain_data])
     labels = np.asarray([measurement[2] for measurement in retrain_data])
 
     data = np.reshape(data, (data.__len__(), 28, 1))
@@ -44,7 +44,7 @@ def predict(measurement):
     file_name = os.path.dirname(__file__) + '\\saved_model\\trained_model.h5'
     model = load_model(file_name)
 
-    measurement_data = np.asarray(measurement[5:])
+    measurement_data = np.asarray(measurement[4:])
     measurement_data = np.reshape(measurement_data, (1, 28, 1))
     correct_class = np.asarray([measurement[2]])
 
