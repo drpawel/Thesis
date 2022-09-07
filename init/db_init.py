@@ -61,5 +61,5 @@ with open('../resources/DSL-StrongPasswordData.csv', 'r') as file:
     cursor.executemany(insert_data_query, data)
     conn.commit()
 
-print("Created tables in thesis database: users, measurements")
+print('Created tables in thesis database: users, measurements')
 conn.close()

@@ -30,7 +30,7 @@ def create_and_compile_model():
     model.compile(
         loss=keras.losses.SparseCategoricalCrossentropy(),
         optimizer=keras.optimizers.RMSprop(),
-        metrics=["accuracy"],
+        metrics=['accuracy'],
     )
     return model
 
@@ -41,12 +41,12 @@ def train_and_save_model(model, train_x, test_x, train_y, test_y):
 
     # evaluate model
     test_scores = model.evaluate(test_x, test_y, verbose=2)
-    print("Test loss:", test_scores[0])
-    print("Test accuracy:", test_scores[1])
+    print('Test loss:', test_scores[0])
+    print('Test accuracy:', test_scores[1])
 
     # save model
     model.save('saved_model/model.h5')
-    print("Model saved!")
+    print('Model saved!')
 
     # summarize history for accuracy
     plt.plot(history.history['accuracy'])

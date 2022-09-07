@@ -25,16 +25,16 @@ def retrain(retrain_data, users):
     model.compile(
         loss=keras.losses.SparseCategoricalCrossentropy(),
         optimizer=keras.optimizers.RMSprop(),
-        metrics=["accuracy"],
+        metrics=['accuracy'],
     )
 
     model.fit(train_x, train_y, epochs=250, validation_split=0.2, batch_size=400)
     test_scores = model.evaluate(test_x, test_y, verbose=2)
-    print("Test loss:", test_scores[0])
-    print("Test accuracy:", test_scores[1])
+    print('Test loss:', test_scores[0])
+    print('Test accuracy:', test_scores[1])
 
     model.save('data/saved_model/model.h5')
-    print("Model saved!")
+    print('Model saved!')
 
 
 def predict(measurement):
@@ -54,6 +54,6 @@ def predict(measurement):
     probability = prediction.max(1)[0] * 100
 
     if result != correct_class:
-        return int(-1), int(probability)
+        return False, int(probability)
 
-    return int(result), int(probability)
+    return True, int(probability)

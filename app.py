@@ -11,8 +11,7 @@ def get_default_page():
 
 @app.route('/analyze/<string:measurement_id>')
 def get_analysis_page(measurement_id):
-    # return render_template('analysis.html', measurement_id)
-    return render_template('analysis.html')
+    return render_template('analysis.html', measurement_id=measurement_id)
 
 
 @app.route('/measurements', methods=['POST'])
@@ -20,7 +19,7 @@ def add_measurement():
     try:
         measurement_id = service.insert_measurement(request.json)
     except Exception as err:
-        return "Occurred error: " + str(err)
+        return 'Occurred error: ' + str(err)
 
     return jsonify(id=measurement_id)
 
@@ -30,14 +29,14 @@ def retrain_model():
     try:
         service.retrain_model()
     except Exception as err:
-        return "Occurred error: " + str(err)
-    return "", 202
+        return 'Occurred error: ' + str(err)
+    return '', 202
 
 
 @app.route('/results/<string:measurement_id>', methods=['GET'])
 def get_result(measurement_id):
-    result, probability = service.get_result(measurement_id)
-    return jsonify(id=measurement_id, result=result, probability=probability)
+    is_success, probability = service.get_result(measurement_id)
+    return jsonify(id=measurement_id, isSuccess=is_success, probability=probability)
 
 
 if __name__ == '__main__':

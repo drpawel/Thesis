@@ -6,13 +6,19 @@
     <title>Keystroke authentication App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css"/>
 </head>
+<body>
 <div class="column is-4 is-offset-4">
     <div class="box">
         <h3 class="title">Result</h3>
         <div class="notification is-primary">
-            <h3 class="title">80%</h3>
+            <h3 class="title" id="title">Calculating...</h3>
         </div>
-        <progress class="progress is-large" value="80" max="100">80%</progress>
+        <progress class="progress is-large" id="progress_bar" value="0" max="100"></progress>
     </div>
 </div>
+<script>
+    let measurementId = '{{ measurement_id }}';
+</script>
+<script src="/static/show_result.js"></script>
+</body>
 </html>
