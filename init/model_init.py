@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy as np
 from data import repository
 from sklearn.model_selection import train_test_split
@@ -45,7 +47,8 @@ def train_and_save_model(model, train_x, test_x, train_y, test_y):
     print('Test accuracy:', test_scores[1])
 
     # save model
-    model.save('saved_model/model.h5')
+    file_name = Path(__file__).parent.parent.__str__() + '\\data\\saved_model\\model.h5'
+    model.save(file_name)
     print('Model saved!')
 
     # summarize history for accuracy

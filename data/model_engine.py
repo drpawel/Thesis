@@ -1,5 +1,5 @@
-import os
 import numpy as np
+from pathlib import Path
 from tensorflow import keras
 from keras.models import load_model
 from keras import layers
@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 
 
 def retrain(retrain_data, users):
-    file_name = os.path.dirname(__file__) + '\\saved_model\\model.h5'
+    file_name = Path(__file__).parent.parent.__str__() + '\\data\\saved_model\\model.h5'
     model = load_model(file_name)
 
     data = np.asarray([measurement[4:] for measurement in retrain_data])
@@ -41,7 +41,7 @@ def predict(measurement):
     if measurement is None:
         return int(-1), int(0)
 
-    file_name = os.path.dirname(__file__) + '\\saved_model\\model.h5'
+    file_name = Path(__file__).parent.parent.__str__() + '\\data\\saved_model\\model.h5'
     model = load_model(file_name)
 
     measurement_data = np.asarray(measurement[4:])
