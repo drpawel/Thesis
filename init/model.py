@@ -39,7 +39,7 @@ def create_and_compile_model():
 
 def train_and_save_model(model, train_x, test_x, train_y, test_y):
     # train model
-    history = model.fit(train_x, train_y, epochs=250, validation_split=0.2, batch_size=400)
+    history = model.fit(train_x, train_y, epochs=2, validation_split=0.2, batch_size=400)
 
     # evaluate model
     test_scores = model.evaluate(test_x, test_y, verbose=2)
@@ -61,6 +61,7 @@ def train_and_save_model(model, train_x, test_x, train_y, test_y):
     plt.show()
 
 
-train_data, test_data, train_labels, test_labels = retrieve_training_and_test_data()
-compiled_model = create_and_compile_model()
-train_and_save_model(compiled_model, train_data, test_data, train_labels, test_labels)
+def init():
+    train_data, test_data, train_labels, test_labels = retrieve_training_and_test_data()
+    compiled_model = create_and_compile_model()
+    train_and_save_model(compiled_model, train_data, test_data, train_labels, test_labels)

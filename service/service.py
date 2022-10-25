@@ -1,5 +1,6 @@
 import uuid
-from data import data_formatter, repository, model_engine
+from data import model_engine, repository
+from utils import data_formatter
 
 
 def insert_measurement(measurement):

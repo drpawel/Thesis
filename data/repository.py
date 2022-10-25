@@ -1,17 +1,8 @@
-import mysql.connector
-
-
-def create_connection():
-    return mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='',
-        database='thesis'
-    )
+from utils import connection_factory
 
 
 def insert_user(user_name):
-    conn = create_connection()
+    conn = connection_factory.create_connection()
     cursor = conn.cursor()
 
     cursor.execute('SELECT id FROM users WHERE user_name = %s', (user_name,))
@@ -29,7 +20,7 @@ def insert_user(user_name):
 
 
 def insert_measurement(data):
-    conn = create_connection()
+    conn = connection_factory.create_connection()
     cursor = conn.cursor()
 
     insert_data_query = 'INSERT INTO measurements (external_id, user_id, is_training, H_period, DD_period_t, ' \
@@ -45,7 +36,7 @@ def insert_measurement(data):
 
 
 def get_all_measurements_for_training():
-    conn = create_connection()
+    conn = connection_factory.create_connection()
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM measurements WHERE is_training=1')
@@ -57,7 +48,7 @@ def get_all_measurements_for_training():
 
 
 def get_all_users():
-    conn = create_connection()
+    conn = connection_factory.create_connection()
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM users')
@@ -69,7 +60,7 @@ def get_all_users():
 
 
 def get_measurement(measurement_id):
-    conn = create_connection()
+    conn = connection_factory.create_connection()
     cursor = conn.cursor()
 
     cursor.execute('SELECT * FROM measurements WHERE external_id = UUID_TO_BIN(%s)', (measurement_id,))

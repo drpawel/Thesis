@@ -24,8 +24,7 @@ docker run --name thesis -p 3306:3306 -e MYSQL_ROOT_PASSWORD={password} -d mysql
 
 ```
 cd /init
-python3 db_init.py
-python3 model_init.py
+python3 init.py
 ```
 
 ### Run app
