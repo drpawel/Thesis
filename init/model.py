@@ -39,7 +39,7 @@ def create_and_compile_model():
 
 def train_and_save_model(model, train_x, test_x, train_y, test_y):
     # train model
-    history = model.fit(train_x, train_y, epochs=2, validation_split=0.2, batch_size=400)
+    history = model.fit(train_x, train_y, epochs=2, batch_size=400)
 
     # evaluate model
     test_scores = model.evaluate(test_x, test_y, verbose=2)

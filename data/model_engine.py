@@ -16,7 +16,7 @@ def retrain(retrain_data, users):
     data = np.reshape(data, (data.__len__(), 28, 1))
     labels = labels - 1
 
-    train_x, test_x, train_y, test_y = train_test_split(data, labels, test_size=0.20)
+    train_x, test_x, train_y, test_y = train_test_split(data, labels, test_size=0.10)
 
     model.pop()
     model.add(layers.Dense(users.__len__(), activation='softmax'))
@@ -28,7 +28,7 @@ def retrain(retrain_data, users):
         metrics=['accuracy'],
     )
 
-    model.fit(train_x, train_y, epochs=250, validation_split=0.2, batch_size=400)
+    model.fit(train_x, train_y, epochs=250, batch_size=400)
     test_scores = model.evaluate(test_x, test_y, verbose=2)
     print('Test loss:', test_scores[0])
     print('Test accuracy:', test_scores[1])
