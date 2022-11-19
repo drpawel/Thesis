@@ -10,8 +10,10 @@ autonumber
 User -> WebPage: Training Measurement
 WebPage -> WebPage: Validation
 WebPage -> FlaskApp: JSON
+FlaskApp -> FlaskApp: Formatting
 FlaskApp -> Database: Formatted measurement
-FlaskApp --> User: Message
+FlaskApp --> WebPage: MeasurementId
+WebPage --> User: Message
 end
 
 group Predict result
@@ -19,23 +21,25 @@ autonumber
 User -> WebPage: Measurement
 WebPage -> WebPage: Validation
 WebPage -> FlaskApp: JSON
+FlaskApp -> FlaskApp: Formatting
 FlaskApp -> Database: Formatted measurement
+FlaskApp -->WebPage: MeasurementId
 WebPage -> FlaskApp: Get result page
 FlaskApp --> WebPage: Redirect
 FlaskApp -> Database: Get measurement for prediction
 Database --> FlaskApp: Measurement
 FlaskApp -> KerasModel: Predict
 KerasModel --> FlaskApp: Prediction
-loop
-WebPage -> FlaskApp: Get result
+WebPage -> FlaskApp: Get result (async)
 FlaskApp --> WebPage: Result
-end
 WebPage -> User: Show result
 end
 
 group Retrain model
 autonumber
 User -> FlaskApp: API Call /retrain
+FlaskApp -> Database: Get training data
+Database --> FlaskApp: Training data
 FlaskApp -> KerasModel: Retrain based on all measurements
 KerasModel --> FlaskApp
 FlaskApp --> User
