@@ -28,7 +28,7 @@ def retrain(retrain_data, users):
         metrics=['accuracy'],
     )
 
-    model.fit(train_x, train_y, epochs=250, batch_size=400)
+    model.fit(train_x, train_y, epochs=200, batch_size=400)
     test_scores = model.evaluate(test_x, test_y, verbose=2)
     print('Test loss:', test_scores[0])
     print('Test accuracy:', test_scores[1])

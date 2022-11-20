@@ -24,7 +24,6 @@ def create_and_compile_model():
     # create model
     model = keras.Sequential()
     model.add(layers.LSTM(100, return_sequences=True, input_shape=(28, 1)))
-    model.add(layers.LSTM(100, return_sequences=True))
     model.add(layers.LSTM(100))
     model.add(layers.Dense(51, activation='softmax'))
 
@@ -39,7 +38,7 @@ def create_and_compile_model():
 
 def train_and_save_model(model, train_x, test_x, train_y, test_y):
     # train model
-    history = model.fit(train_x, train_y, epochs=2, batch_size=400)
+    history = model.fit(train_x, train_y, epochs=250, batch_size=400)
 
     # evaluate model
     test_scores = model.evaluate(test_x, test_y, verbose=2)
@@ -53,11 +52,10 @@ def train_and_save_model(model, train_x, test_x, train_y, test_y):
 
     # summarize history for accuracy
     plt.plot(history.history['accuracy'])
-    plt.plot(history.history['val_accuracy'])
     plt.title('model accuracy')
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
-    plt.legend(['train', 'test'], loc='upper left')
+    plt.legend(['train'], loc='upper left')
     plt.show()
 
 
