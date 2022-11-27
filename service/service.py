@@ -29,4 +29,4 @@ def retrain_model():
 def get_result(measurement_id):
     measurement = repository.get_measurement(measurement_id)
 
-    return model_engine.predict(measurement)
+    return model_engine.predict(measurement, 86)

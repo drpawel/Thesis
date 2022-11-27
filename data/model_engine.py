@@ -37,7 +37,7 @@ def retrain(retrain_data, users):
     print('Model saved!')
 
 
-def predict(measurement):
+def predict(measurement, threshold):
     if measurement is None:
         return int(-1), int(0)
 
@@ -53,7 +53,7 @@ def predict(measurement):
     result = np.argmax(prediction, axis=1)[0] + 1
     probability = prediction.max(1)[0] * 100
 
-    if result != correct_class:
+    if result != correct_class or probability < threshold:
         return False, int(probability)
 
     return True, int(probability)

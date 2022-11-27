@@ -38,7 +38,7 @@ def create_and_compile_model():
 
 def train_and_save_model(model, train_x, test_x, train_y, test_y):
     # train model
-    history = model.fit(train_x, train_y, epochs=250, batch_size=400)
+    history = model.fit(train_x, train_y, epochs=1500, validation_split=0.2, batch_size=2500)
 
     # evaluate model
     test_scores = model.evaluate(test_x, test_y, verbose=2)
@@ -52,10 +52,11 @@ def train_and_save_model(model, train_x, test_x, train_y, test_y):
 
     # summarize history for accuracy
     plt.plot(history.history['accuracy'])
+    plt.plot(history.history['val_accuracy'])
     plt.title('model accuracy')
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
-    plt.legend(['train'], loc='upper left')
+    plt.legend(['train', 'test'], loc='upper left')
     plt.show()
 
 
