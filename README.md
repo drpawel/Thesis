@@ -19,7 +19,7 @@ Project is based on Python 3.9 and Tensorflow 2.9.1.
 All requirements can be found in `requirements.txt` file.
 
 ```
-docker run --name thesis -p 3306:3306 -e MYSQL_ROOT_PASSWORD={password} -d mysql:latest
+docker run --name thesis -p 3306:3306 -v datavolume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD={password} -d mysql:latest
 ```
 
 ```
